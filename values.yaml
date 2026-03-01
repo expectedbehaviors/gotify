@@ -97,3 +97,9 @@ gotify:
       globalMounts:
         - path: /app/data
           readOnly: false
+
+# 1Password: optional. If you need secrets (e.g. custom config), enable and add items.
+# Subchart: expectedbehaviors/OnePasswordItem-helm. Secrets are created in the release namespace.
+onepassworditem:
+  enabled: true
+  items: []
