@@ -11,6 +11,42 @@ Baseline for [Gotify](https://gotify.net) (self-hosted push notifications). Uses
 
 All inputs: **`gotify.*`** (controllers, persistence, ingress, env), **`onepassworditem.enabled`**, **`onepassworditem.items`**. Defaults: see `values.yaml`.
 
+## Configuration reference (all inputs)
+
+Every value is documented below. Source: [bjw-s app-template](https://github.com/bjw-s/helm-charts) (as `gotify.*`) and [expectedbehaviors/OnePasswordItem-helm](https://github.com/expectedbehaviors/OnePasswordItem-helm) (as `onepassworditem.*`).
+
+### Subchart: gotify (bjw-s app-template)
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `gotify.global.fullnameOverride` | string | — | Override full name (e.g. `gotify`). |
+| `gotify.defaultPodOptions.securityContext` | object | — | Default pod security. |
+| `gotify.controllers.main.enabled` | bool | `true` | Enable main controller. |
+| `gotify.controllers.main.type` | string | `"deployment"` | Controller type. |
+| `gotify.controllers.main.replicas` | int | `1` | Replicas. |
+| `gotify.controllers.main.containers.main.image.repository` | string | — | Image (e.g. `gotify/server`). |
+| `gotify.controllers.main.containers.main.image.tag` | string | — | Image tag. |
+| `gotify.controllers.main.containers.main.env` | object | — | Env vars (TZ, GOTIFY_DEFAULTUSER_PASS via secretRef, etc.). |
+| `gotify.controllers.main.containers.main.probes` | object | — | liveness, readiness, startup. |
+| `gotify.controllers.main.containers.main.resources` | object | — | requests/limits. |
+| `gotify.service.main.enabled` | bool | `true` | Enable main service. |
+| `gotify.service.main.ports` | object | — | Ports (e.g. http: 80). |
+| `gotify.ingress.main.enabled` | bool | `true` | Enable ingress. |
+| `gotify.ingress.main.hosts` | list | — | Hosts (host, paths, pathType). |
+| `gotify.ingress.main.tls` | list | `[]` | TLS (secretName, hosts). |
+| `gotify.ingress.main.annotations` | object | `{}` | Ingress annotations. |
+| `gotify.persistence.data.enabled` | bool | `true` | Enable data PVC. |
+| `gotify.persistence.data.size` | string | — | PVC size (e.g. 1Gi). |
+| `gotify.persistence.data.existingClaim` | string | — | Use existing PVC. |
+
+### Subchart: onepassworditem
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `onepassworditem.enabled` | bool | `true` | Create OnePasswordItem resources; set `false` if supplying secrets another way. |
+| `onepassworditem.defaultVault` | string | `""` | Default vault for items. |
+| `onepassworditem.items` | list | `[]` | List of `{ item, name, type }`; `name` must match Secret refs in container env. |
+
 ## Chart contents
 
 - **App:** Gotify (gotify/server) via bjw-s app-template; port 80.
