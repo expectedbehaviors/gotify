@@ -2,6 +2,15 @@
 
 Baseline for [Gotify](https://gotify.net) (self-hosted push notifications). Uses [bjw-s app-template](https://github.com/bjw-s/app-template). Override TZ, ingress host, and TLS in your values. Use OIDC at ingress (e.g. nginx + oauth2-proxy) to protect the app.
 
+## Subcharts
+
+| Subchart | Source | Values prefix | Description |
+|----------|--------|---------------|-------------|
+| **gotify** (app-template) | [bjw-s helm-charts](https://github.com/bjw-s/helm-charts) | `gotify.*` | App template: controllers, persistence, ingress, env. |
+| **onepassworditem** | [expectedbehaviors/OnePasswordItem-helm](https://github.com/expectedbehaviors/OnePasswordItem-helm) | `onepassworditem.*` | Optional secrets sync into the release namespace. |
+
+All inputs: **`gotify.*`** (controllers, persistence, ingress, env), **`onepassworditem.enabled`**, **`onepassworditem.items`**. Defaults: see `values.yaml`.
+
 ## Chart contents
 
 - **App:** Gotify (gotify/server) via bjw-s app-template; port 80.
